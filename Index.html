@@ -1,1 +1,430 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b1a">
+<title>Md. Tabashir Hosen Timon | Digital Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<style>
+  :root{
+    --bg:#070b1a;
+    --card:rgba(255,255,255,.06);
+    --card-border:rgba(255,255,255,.12);
+    --text:#eef1ff;
+    --muted:#9aa3c7;
+    --c1:#7c5cff;
+    --c2:#00d4ff;
+    --c3:#ff4ecd;
+    --ok:#22e58b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Poppins','Hind Siliguri',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+
+  /* ---------- Animated background ---------- */
+  .bg{position:fixed;inset:0;z-index:-2;overflow:hidden}
+  .blob{
+    position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;
+    animation:float 14s ease-in-out infinite;
+  }
+  .blob.b1{width:380px;height:380px;background:var(--c1);top:-100px;left:-100px}
+  .blob.b2{width:340px;height:340px;background:var(--c2);bottom:-80px;right:-80px;animation-delay:-5s}
+  .blob.b3{width:280px;height:280px;background:var(--c3);top:45%;left:55%;animation-delay:-9s;opacity:.35}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(40px,-50px) scale(1.12)}
+    66%{transform:translate(-40px,40px) scale(.92)}
+  }
+  #particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+
+  /* ---------- Loader ---------- */
+  #loader{
+    position:fixed;inset:0;background:var(--bg);z-index:999;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;
+    transition:opacity .7s ease,visibility .7s ease;
+  }
+  #loader.hide{opacity:0;visibility:hidden}
+  .ring{
+    width:64px;height:64px;border-radius:50%;
+    border:4px solid rgba(255,255,255,.1);
+    border-top-color:var(--c2);border-right-color:var(--c1);
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #loader p{color:var(--muted);letter-spacing:3px;font-size:12px;text-transform:uppercase}
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:480px;margin:0 auto;padding:36px 18px 90px}
+
+  /* ---------- Profile ---------- */
+  .profile{text-align:center;margin-bottom:26px}
+  .avatar-box{
+    position:relative;width:150px;height:150px;margin:0 auto 20px;
+    animation:pop 1s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  .avatar-box::before{
+    content:"";position:absolute;inset:-6px;border-radius:50%;
+    background:conic-gradient(var(--c1),var(--c2),var(--c3),var(--c1));
+    animation:spin 5s linear infinite;
+  }
+  .avatar-box::after{
+    content:"";position:absolute;inset:-6px;border-radius:50%;
+    background:inherit;filter:blur(18px);opacity:.6;z-index:-1;
+    background:conic-gradient(var(--c1),var(--c2),var(--c3),var(--c1));
+    animation:spin 5s linear infinite;
+  }
+  .avatar{
+    position:relative;width:100%;height:100%;border-radius:50%;object-fit:cover;
+    border:5px solid var(--bg);background:#151a35;z-index:1;
+  }
+  @keyframes pop{from{opacity:0;transform:scale(.3) rotate(-30deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+
+  .name{
+    font-size:26px;font-weight:700;letter-spacing:.3px;
+    background:linear-gradient(90deg,var(--c2),var(--c1),var(--c3),var(--c2));
+    background-size:250% auto;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    animation:shine 5s linear infinite,fadeUp .9s .3s both;
+  }
+  @keyframes shine{to{background-position:250% center}}
+  .tagline{
+    margin-top:8px;color:var(--muted);font-size:14px;min-height:22px;
+    animation:fadeUp .9s .5s both;
+  }
+  .tagline .cursor{
+    display:inline-block;width:2px;height:15px;background:var(--c2);margin-left:3px;
+    vertical-align:middle;animation:blink .8s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- Quick actions ---------- */
+  .quick{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0 8px;
+    animation:fadeUp .9s .7s both;
+  }
+  .q-btn{
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    padding:14px 6px;border-radius:18px;text-decoration:none;color:var(--text);
+    background:var(--card);border:1px solid var(--card-border);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    font-size:11.5px;font-weight:500;transition:.3s;
+  }
+  .q-btn i{font-size:20px}
+  .q-btn:active,.q-btn:hover{transform:translateY(-4px);border-color:var(--c2);box-shadow:0 10px 28px -8px var(--c2)}
+  .q-btn.call i{color:#3ddc97}
+  .q-btn.wa i{color:#25d366}
+  .q-btn.mail i{color:#ff6b6b}
+  .q-btn.map i{color:#ffb84d}
+
+  /* ---------- Section title ---------- */
+  .sec-title{
+    display:flex;align-items:center;gap:10px;margin:30px 4px 14px;
+    font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  }
+  .sec-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--card-border),transparent)}
+
+  /* ---------- Cards ---------- */
+  .item{
+    position:relative;display:flex;align-items:center;gap:14px;
+    padding:14px 14px;margin-bottom:12px;border-radius:20px;
+    background:var(--card);border:1px solid var(--card-border);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;
+    opacity:0;transform:translateY(30px);
+  }
+  .item.show{opacity:1;transform:translateY(0);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.9,.3,1),border-color .3s,box-shadow .3s}
+  .item::before{
+    content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);
+    transform:skewX(-20deg);transition:.7s;
+  }
+  .item:hover::before{left:140%}
+  .item:hover{border-color:rgba(124,92,255,.6);box-shadow:0 12px 34px -14px var(--c1);transform:translateY(-3px)}
+
+  .ico{
+    flex:0 0 46px;height:46px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.6);
+  }
+  .info{flex:1;min-width:0}
+  .label{font-size:11px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+  .value{font-size:15px;font-weight:500;word-break:break-word;color:var(--text);text-decoration:none;display:block;margin-top:1px}
+  a.value:hover{color:var(--c2)}
+  .value.mono{letter-spacing:.8px;font-variant-numeric:tabular-nums}
+
+  /* ---------- Copy button ---------- */
+  .copy{
+    flex:0 0 auto;display:flex;align-items:center;gap:6px;
+    padding:9px 13px;border-radius:12px;border:1px solid var(--card-border);
+    background:rgba(255,255,255,.07);color:var(--text);cursor:pointer;
+    font-family:inherit;font-size:12px;font-weight:500;transition:.25s;
+  }
+  .copy:hover{background:rgba(124,92,255,.25);border-color:var(--c1)}
+  .copy:active{transform:scale(.92)}
+  .copy.done{background:rgba(34,229,139,.18);border-color:var(--ok);color:var(--ok)}
+
+  .go{
+    flex:0 0 auto;width:38px;height:38px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;color:var(--muted);
+    background:rgba(255,255,255,.06);transition:.3s;text-decoration:none;
+  }
+  .item:hover .go{background:var(--c1);color:#fff;transform:translateX(3px)}
+
+
+  .open{
+    flex:0 0 auto;display:flex;align-items:center;gap:6px;
+    padding:9px 13px;border-radius:12px;text-decoration:none;
+    background:linear-gradient(120deg,var(--c1),var(--c2));color:#fff;
+    font-size:12px;font-weight:600;transition:.25s;
+    box-shadow:0 8px 20px -10px var(--c1);
+  }
+  .open:hover{transform:translateY(-2px);box-shadow:0 12px 24px -8px var(--c2)}
+  .open:active{transform:scale(.93)}
+
+  /* gradient helpers */
+  .g-blue{background:linear-gradient(135deg,#4facfe,#00c6ff)}
+  .g-red{background:linear-gradient(135deg,#ff5f6d,#ffc371)}
+  .g-green{background:linear-gradient(135deg,#25d366,#128c7e)}
+  .g-orange{background:linear-gradient(135deg,#f7971e,#ffd200)}
+  .g-pink{background:linear-gradient(135deg,#ff416c,#ff4b2b)}
+  .g-purple{background:linear-gradient(135deg,#8e2de2,#4a00e0)}
+  .g-teal{background:linear-gradient(135deg,#11998e,#38ef7d)}
+  .g-dark{background:linear-gradient(135deg,#232526,#414345)}
+  .g-fb{background:linear-gradient(135deg,#1877f2,#0c5ad6)}
+  .g-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+  .g-tt{background:linear-gradient(135deg,#010101,#25f4ee 60%,#fe2c55)}
+  .g-bkash{background:linear-gradient(135deg,#e2136e,#a50a4e)}
+  .g-nagad{background:linear-gradient(135deg,#f6921e,#e8501a)}
+  .g-rocket{background:linear-gradient(135deg,#8c3494,#5b1f66)}
+  .g-upay{background:linear-gradient(135deg,#ffc107,#ff9800)}
+  .g-bank{background:linear-gradient(135deg,#0f7a3e,#0a5c2e)}
+
+  /* NID blur toggle */
+  .eye{
+    flex:0 0 auto;width:38px;height:38px;border-radius:12px;border:1px solid var(--card-border);
+    background:rgba(255,255,255,.07);color:var(--text);cursor:pointer;transition:.25s;font-size:14px;
+  }
+  .eye:hover{background:rgba(124,92,255,.25)}
+  .blurred{filter:blur(7px);user-select:none;transition:filter .3s}
+
+  /* ---------- Save contact FAB ---------- */
+  .save-wrap{
+    position:fixed;left:0;right:0;bottom:0;padding:14px 18px 20px;z-index:50;
+    background:linear-gradient(0deg,var(--bg) 40%,transparent);
+    display:flex;justify-content:center;pointer-events:none;
+  }
+  .save-btn{
+    pointer-events:auto;width:100%;max-width:444px;border:none;cursor:pointer;
+    padding:16px;border-radius:18px;font-family:inherit;font-size:15px;font-weight:600;color:#fff;
+    background:linear-gradient(120deg,var(--c1),var(--c2),var(--c3));background-size:220% auto;
+    animation:shine 4s linear infinite,pulse 2.4s ease-in-out infinite;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 14px 34px -10px var(--c1);
+  }
+  .save-btn:active{transform:scale(.97)}
+  @keyframes pulse{0%,100%{box-shadow:0 14px 34px -10px var(--c1)}50%{box-shadow:0 14px 44px -4px var(--c2)}}
+
+  /* ---------- Toast ---------- */
+  #toast{
+    position:fixed;left:50%;bottom:100px;transform:translate(-50%,30px);
+    background:rgba(20,26,54,.95);border:1px solid var(--ok);color:var(--ok);
+    padding:11px 20px;border-radius:999px;font-size:13px;font-weight:500;z-index:200;
+    opacity:0;pointer-events:none;transition:.35s;display:flex;gap:8px;align-items:center;
+    backdrop-filter:blur(10px);
+  }
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+  footer span{color:var(--c3)}
+
+  @media (max-width:380px){
+    .name{font-size:22px}
+    .copy span,.open span{display:none}
+    .copy,.open{padding:10px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="ring"></div><p>Loading Card</p></div>
+
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+<canvas id="particles"></canvas>
+
+<div class="wrap">
+
+  <!-- ===== Profile ===== -->
+  <section class="profile">
+    <div class="avatar-box">
+      <img class="avatar"
+           src="https://i.ibb.co/KxQGs1gw/Screenshot-2026-0924-191203.png"
+           alt="Md. Tabashir Hosen Timon"
+           onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23151a35%22/><text x=%2250%22 y=%2265%22 font-size=%2245%22 text-anchor=%22middle%22 fill=%22%237c5cff%22 font-family=%22Arial%22>T</text></svg>'">
+    </div>
+    <h1 class="name">Md. Tabashir Hosen Timon</h1>
+    <p class="tagline"><span id="typed"></span><span class="cursor"></span></p>
+  </section>
+
+  <!-- ===== Quick actions ===== -->
+  <div class="quick">
+    <a class="q-btn call" href="tel:+8801834525229"><i class="fa-solid fa-phone"></i>Call</a>
+    <a class="q-btn wa" href="https://wa.me/8801834525229" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+    <a class="q-btn mail" href="mailto:mdtimon696@gmail.com"><i class="fa-solid fa-envelope"></i>Email</a>
+    <a class="q-btn map" href="https://www.google.com/maps/search/?api=1&query=Alipur+Kafrikhal+Mithapukur+Rangpur" target="_blank" rel="noopener"><i class="fa-solid fa-location-dot"></i>Map</a>
+  </div>
+
+  <!-- ===== Contact ===== -->
+  <div class="sec-title"><i class="fa-solid fa-address-card"></i> Contact</div>
+
+  <div class="item">
+    <div class="ico g-blue"><i class="fa-solid fa-phone"></i></div>
+    <div class="info"><div class="label">Phone</div><a class="value mono" href="tel:+8801834525229">01834525229</a></div>
+    <button class="copy" data-copy="01834525229"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <div class="item">
+    <div class="ico g-green"><i class="fa-brands fa-whatsapp"></i></div>
+    <div class="info"><div class="label">WhatsApp</div><a class="value mono" href="https://wa.me/8801834525229" target="_blank" rel="noopener">01834525229</a></div>
+    <a class="open" href="https://wa.me/8801834525229" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open</span></a>
+    <button class="copy" data-copy="01834525229"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <div class="item">
+    <div class="ico g-red"><i class="fa-solid fa-envelope"></i></div>
+    <div class="info"><div class="label">Gmail</div><a class="value" href="mailto:mdtimon696@gmail.com">mdtimon696@gmail.com</a></div>
+    
+  </div>
+
+  <!-- ===== Personal ===== -->
+  <div class="sec-title"><i class="fa-solid fa-user"></i> Personal Info</div>
+
+  <div class="item">
+    <div class="ico g-orange"><i class="fa-solid fa-location-dot"></i></div>
+    <div class="info">
+      <div class="label">Location</div>
+      <span class="value">Alipur, Kafrikhal, Mithapukur, Rangpur</span>
+    </div>
+    <a class="open" href="https://www.google.com/maps/search/?api=1&query=Alipur+Kafrikhal+Mithapukur+Rangpur" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open</span></a>
+  </div>
+
+  <div class="item">
+    <div class="ico g-pink"><i class="fa-solid fa-droplet"></i></div>
+    <div class="info"><div class="label">Blood Group</div><span class="value">B+</span></div>
+    
+  </div>
+
+  <div class="item">
+    <div class="ico g-purple"><i class="fa-solid fa-id-card"></i></div>
+    <div class="info"><div class="label">NID Number</div><span class="value mono blurred" id="nid">1983198878</span></div>
+    <button class="eye" id="eyeBtn" aria-label="Show or hide NID"><i class="fa-regular fa-eye"></i></button>
+    <button class="copy" data-copy="1983198878"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <!-- ===== Payment ===== -->
+  <div class="sec-title"><i class="fa-solid fa-wallet"></i> Payment</div>
+
+  <div class="item">
+    <div class="ico g-bkash"><i class="fa-solid fa-mobile-screen-button"></i></div>
+    <div class="info"><div class="label">bKash (Personal)</div><span class="value mono">01834525229</span></div>
+    <button class="copy" data-copy="01834525229"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <div class="item">
+    <div class="ico g-nagad"><i class="fa-solid fa-mobile-screen-button"></i></div>
+    <div class="info"><div class="label">Nagad (Personal)</div><span class="value mono">01834525229</span></div>
+    <button class="copy" data-copy="01834525229"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <div class="item">
+    <div class="ico g-rocket"><i class="fa-solid fa-rocket"></i></div>
+    <div class="info"><div class="label">Rocket (Personal)</div><span class="value mono">01834525229</span></div>
+    <button class="copy" data-copy="01834525229"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <div class="item">
+    <div class="ico g-upay"><i class="fa-solid fa-mobile-screen-button"></i></div>
+    <div class="info"><div class="label">Upay (Personal)</div><span class="value mono">01834525229</span></div>
+    <button class="copy" data-copy="01834525229"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <div class="item">
+    <div class="ico g-bank"><i class="fa-solid fa-building-columns"></i></div>
+    <div class="info"><div class="label">অগ্রণী ব্যাংক (Agrani Bank)</div><span class="value mono">0200022528080</span></div>
+    <button class="copy" data-copy="0200022528080"><i class="fa-regular fa-copy"></i><span>Copy</span></button>
+  </div>
+
+  <!-- ===== Social ===== -->
+  <div class="sec-title"><i class="fa-solid fa-share-nodes"></i> Social Media</div>
+
+  <div class="item">
+    <div class="ico g-fb"><i class="fa-brands fa-facebook-f"></i></div>
+    <div class="info"><div class="label">Facebook</div><a class="value" href="https://www.facebook.com/share/1Fuj4bwBYG/" target="_blank" rel="noopener">Md. Tabashir Hosen Timon</a></div>
+    <a class="open" href="https://www.facebook.com/share/1Fuj4bwBYG/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open</span></a>
+  </div>
+
+  <div class="item">
+    <div class="ico g-ig"><i class="fa-brands fa-instagram"></i></div>
+    <div class="info"><div class="label">Instagram</div><a class="value" href="https://www.instagram.com/md.tabassirhosen?stkn=MXBiOHFrZHRrZ3I2eQ==" target="_blank" rel="noopener">@md.tabassirhosen</a></div>
+    <a class="open" href="https://www.instagram.com/md.tabassirhosen?stkn=MXBiOHFrZHRrZ3I2eQ==" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open</span></a>
+  </div>
+
+  <div class="item">
+    <div class="ico g-tt"><i class="fa-brands fa-tiktok"></i></div>
+    <div class="info"><div class="label">TikTok</div><a class="value" href="https://www.tiktok.com/@md.timon?_r=1&_t=ZS-9A06V8VNq5M" target="_blank" rel="noopener">@md.timon</a></div>
+    <a class="open" href="https://www.tiktok.com/@md.timon?_r=1&_t=ZS-9A06V8VNq5M" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open</span></a>
+  </div>
+
+  <footer>Made with <span>&hearts;</span> &middot; Digital Visiting Card</footer>
+</div>
+
+<!-- ===== Save contact ===== -->
+<div class="save-wrap">
+  <button class="save-btn" id="saveBtn"><i class="fa-solid fa-user-plus"></i> Save Contact</button>
+</div>
+
+<div id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastText">Copied!</span></div>
+
+<script>
+/* ---------- Loader ---------- */
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'),700);
+});
+
+/* ---------- Typing effect ---------- */
+(function(){
+  const words=["Digital Business Card","Available for Contact","Rangpur, Bangladesh"];
+  const el=document.getElementById('typed');
+  let w=0,c=0,del=false;
+  function tick(){
+    const word=words[w];
+    el.textContent=word.substring(0,c);
+    if(!del&&c<word.length){c++;setTimeout(tick,85)}
+    else if(!del&&c===word.length){del=true;setTimeout(tick,1500)}
+    else if(del&&c>0){c--;setTimeout(tick,45)}
+    else{del=false;w=(w+1)%words.length;setTimeout(tick,300)}
+  }
+  setTimeout(tick,1200);
+})();
+
+/* ---------- Scroll reveal ---------- */
+(function
